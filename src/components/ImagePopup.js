@@ -1,8 +1,8 @@
-function ImagePopup(props) {
+export default function ImagePopup(props) {
   return (
     props.card && (
       <section
-        className={`popup popup_type_image ${props.card ? "popup_opened" : ""}`}
+        className="popup popup_type_image popup_opened"
       >
         <div className="popup__image-wrapper">
           <figure className="popup__figure">
@@ -27,4 +27,3 @@ function ImagePopup(props) {
   );
 }
 
-export default ImagePopup;

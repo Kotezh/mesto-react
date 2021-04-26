@@ -49,7 +49,7 @@ class Api {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({
-        title: title,
+        name: title,
         link: link,
       }),
     }).then((res) => this._parseResponse(res));
@@ -62,16 +62,9 @@ class Api {
     }).then((res) => this._parseResponse(res));
   }
 
-  addLike(cardId) {
+  toggleLike(cardId, isLiked) {
     return fetch(`${this.url}/cards/likes/${cardId}`, {
-      method: "PUT",
-      headers: this.headers,
-    }).then((res) => this._parseResponse(res));
-  }
-
-  deleteLike(cardId) {
-    return fetch(`${this.url}/cards/likes/${cardId}`, {
-      method: "DELETE",
+      method: isLiked ? "DELETE" : "PUT",
       headers: this.headers,
     }).then((res) => this._parseResponse(res));
   }

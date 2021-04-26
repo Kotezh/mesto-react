@@ -1,10 +1,8 @@
-function PopupWithForm(props) {
+export default function PopupWithForm(props) {
+  const openedClass = props.isOpen ? "popup_opened" : "";
+  
   return (
-    <section
-      className={`popup popup_type_${props.name} ${
-        props.isOpen ? "popup_opened" : ""
-      }`}
-    >
+    <section className={`popup popup_type_${props.name} ${openedClass}`}>
       <div className="popup__container">
         <h2 className="popup__title">{props.title}</h2>
         <button
@@ -15,8 +13,9 @@ function PopupWithForm(props) {
         ></button>
         <form
           noValidate
-          className={`popup__form popup__form_type_${props.name}`}
+          className="popup__form"
           name="edit-form"
+          onSubmit={props.onSubmit}
           action="#"
           method="post"
         >
@@ -35,4 +34,4 @@ function PopupWithForm(props) {
   );
 }
 
-export default PopupWithForm;
+
