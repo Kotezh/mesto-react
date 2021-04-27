@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
 import AddPlacePopup from "./AddPlacePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import EditProfilePopup from "./EditProfilePopup";
+import ConfirmationPopup from "./ConfirmationPopup";
 import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
@@ -20,10 +20,10 @@ export default function App() {
   });
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
-  const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setISEditAvatarPopupOpen] = useState(false);
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -41,7 +41,7 @@ export default function App() {
       .setUserInfo(data.name, data.about)
       .then((res) => {
         setCurrentUser({ ...currentUser, name: res.name, about: res.about });
-        setEditProfilePopupOpen(false);
+        setIsEditProfilePopupOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -53,7 +53,7 @@ export default function App() {
       .setNewAvatar(newAvatar)
       .then((res) => {
         setCurrentUser({ ...currentUser, avatar: res.avatar });
-        setEditAvatarPopupOpen(false);
+        setISEditAvatarPopupOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -64,7 +64,10 @@ export default function App() {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api.toggleLike(card._id, isLiked).then((newCard) => {
       setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleCardDelete(card) {
@@ -86,7 +89,7 @@ export default function App() {
       .addNewCard(data.title, data.link)
       .then((newCard) => {
         setCards([newCard, ...cards]);
-        setAddPlacePopupOpen(false);
+        setIsAddPlacePopupOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -94,19 +97,19 @@ export default function App() {
   }
 
   function handleEditAvatarClick() {
-    setEditAvatarPopupOpen(true);
+    setISEditAvatarPopupOpen(true);
   }
 
   function handleEditProfileClick() {
-    setEditProfilePopupOpen(true);
+    setIsEditProfilePopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    setAddPlacePopupOpen(true);
+    setIsAddPlacePopupOpen(true);
   }
 
   function handleConfirmClick() {
-    setConfirmPopupOpen(true);
+    setIsConfirmPopupOpen(true);
   }
 
   function handleCardClick(card) {
@@ -114,10 +117,10 @@ export default function App() {
   }
 
   function closeAllPopups() {
-    setEditAvatarPopupOpen(false);
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setConfirmPopupOpen(false);
+    setISEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsConfirmPopupOpen(false);
     setSelectedCard(null);
   }
 
@@ -154,12 +157,9 @@ export default function App() {
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
           />
-          <PopupWithForm
-            title="Вы уверены?"
-            name="type_confirm"
+          <ConfirmationPopup
             isOpen={isConfirmPopupOpen}
             onClose={closeAllPopups}
-            btnName="Да"
           />
         </div>
       </div>

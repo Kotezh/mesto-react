@@ -14,13 +14,13 @@ class Api {
   getUserInfo() {
     return fetch(`${this.url}/users/me`, {
       headers: this.headers,
-    }).then((res) => this._parseResponse(res));
+    }).then(this._parseResponse);
   }
 
   getInitialCards() {
     return fetch(`${this.url}/cards`, {
       headers: this.headers,
-    }).then((res) => this._parseResponse(res));
+    }).then(this._parseResponse);
   }
 
   setUserInfo(name, about) {
@@ -31,7 +31,7 @@ class Api {
         name: name,
         about: about,
       }),
-    }).then((res) => this._parseResponse(res));
+    }).then(this._parseResponse);
   }
 
   setNewAvatar(avatar) {
@@ -41,7 +41,7 @@ class Api {
       body: JSON.stringify({
         avatar: avatar,
       }),
-    }).then((res) => this._parseResponse(res));
+    }).then(this._parseResponse);
   }
 
   addNewCard(title, link) {
@@ -52,21 +52,21 @@ class Api {
         name: title,
         link: link,
       }),
-    }).then((res) => this._parseResponse(res));
+    }).then(this._parseResponse);
   }
 
   deleteCard(cardId) {
     return fetch(`${this.url}/cards/${cardId}`, {
       method: "DELETE",
       headers: this.headers,
-    }).then((res) => this._parseResponse(res));
+    }).then(this._parseResponse);
   }
 
   toggleLike(cardId, isLiked) {
     return fetch(`${this.url}/cards/likes/${cardId}`, {
       method: isLiked ? "DELETE" : "PUT",
       headers: this.headers,
-    }).then((res) => this._parseResponse(res));
+    }).then(this._parseResponse);
   }
 }
 

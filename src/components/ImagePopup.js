@@ -1,29 +1,30 @@
+import React, { useEffect, useState } from "react";
+
 export default function ImagePopup(props) {
+  const [link, setLink] = useState("");
+  const [name, setName] = useState("");
+
+  const openedClass = props.card ? "popup_opened" : "";
+
+  useEffect(() => {
+    props.card && setLink(props.card.link);
+    props.card && setName(props.card.name);
+  }, [props.card]);
+
   return (
-    props.card && (
-      <section
-        className="popup popup_type_image popup_opened"
-      >
-        <div className="popup__image-wrapper">
-          <figure className="popup__figure">
-            <img
-              className="popup__image"
-              src={props.card.link}
-              alt={props.card.name}
-            />
-            <figcaption className="popup__image-caption">
-              {props.card.name}
-            </figcaption>
-          </figure>
-          <button
-            type="reset"
-            aria-label="Close"
-            className="popup__close popup__close_type_image"
-            onClick={props.onClose}
-          ></button>
-        </div>
-      </section>
-    )
+    <section className={`popup popup_type_image ${openedClass}`}>
+      <div className="popup__image-wrapper">
+        <figure className="popup__figure">
+          <img className="popup__image" src={link} alt={name} />
+          <figcaption className="popup__image-caption">{name}</figcaption>
+        </figure>
+        <button
+          type="reset"
+          aria-label="Close"
+          className="popup__close popup__close_type_image"
+          onClick={props.onClose}
+        ></button>
+      </div>
+    </section>
   );
 }
-
